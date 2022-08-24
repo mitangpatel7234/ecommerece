@@ -22,6 +22,7 @@ class AdminProfileController extends Controller
    }
    //when we pass post method then we have to write  Request $request
    public function AdminProfileStore(Request $request){
+   
     $data = Admin ::find(1);
     $data->name = $request->name;
     $data->email = $request->email;
