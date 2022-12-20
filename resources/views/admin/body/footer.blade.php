@@ -5,7 +5,7 @@
 			<a class="nav-link" href="javascript:void(0)">FAQ</a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link" href="https://mitang1803.herokuapp.com/ " target=”_blank”>https://mitang1803.herokuapp.com/</a>
+			<a class="nav-link" href="https://mitangpatel.co.in " target=”_blank”>https://mitangpatel.co.in</a>
 		  </li>
 		</ul>
     </div>
