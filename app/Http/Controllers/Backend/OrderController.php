@@ -10,14 +10,15 @@ use App\Models\OrderItem;
 use Auth;
 use Carbon\Carbon;
 use PDF;
- 
+use App\Models\Product;
+use DB;
 
 class OrderController extends Controller
 {
     
 	// Pending Orders 
 	public function PendingOrders(){
-		$orders = Order::where('status','Pending')->orderBy('id','DESC')->get();
+		$orders = Order::where('status','pending')->orderBy('id','DESC')->get();
 		return view('backend.orders.pending_orders',compact('orders'));
 
 	} // end mehtod 
@@ -41,7 +42,8 @@ public function ConfirmedOrders(){
 
 public function PendingToConfirm($order_id){
 
-    Order::findOrFail($order_id)->update(['status' => 'confirm']);
+    Order::findOrFail($order_id)->update(['confirmed_date' => Carbon::now()->format('d F Y'),
+    'status' => 'confirm']);
 
     $notification = array(
           'message' => 'Order Confirm Successfully',
@@ -101,7 +103,8 @@ public function CancelOrders(){
 
 public function ConfirmToProcessing($order_id){
 
-    Order::findOrFail($order_id)->update(['status' => 'processing']);
+    Order::findOrFail($order_id)->update(['processing_date' => Carbon::now()->format('d F Y'),
+    'status' => 'processing']);
 
     $notification = array(
           'message' => 'Order Processing Successfully',
@@ -117,7 +120,8 @@ public function ConfirmToProcessing($order_id){
 
       public function ProcessingToPicked($order_id){
 
-    Order::findOrFail($order_id)->update(['status' => 'picked']);
+    Order::findOrFail($order_id)->update(['picked_date' => Carbon::now()->format('d F Y'),
+    'status' => 'picked']);
 
     $notification = array(
           'message' => 'Order Picked Successfully',
@@ -132,7 +136,8 @@ public function ConfirmToProcessing($order_id){
 
    public function PickedToShipped($order_id){
 
-    Order::findOrFail($order_id)->update(['status' => 'shipped']);
+    Order::findOrFail($order_id)->update(['shipped_date' => Carbon::now()->format('d F Y'),
+    'status' => 'shipped']);
 
     $notification = array(
           'message' => 'Order Shipped Successfully',
@@ -146,8 +151,16 @@ public function ConfirmToProcessing($order_id){
 
 
    public function ShippedToDelivered($order_id){
+    
+	 $product = OrderItem::where('order_id',$order_id)->get();
+	 foreach ($product as $item) {
+	 	Product::where('id',$item->product_id)
+	 			->update(['product_qty' => DB::raw('product_qty-'.$item->qty)]);
+	 } 
 
-    Order::findOrFail($order_id)->update(['status' => 'delivered']);
+
+    Order::findOrFail($order_id)->update(['delivered_date' => Carbon::now()->format('d F Y'),
+    'status' => 'delivered']);
 
     $notification = array(
           'message' => 'Order Delivered Successfully',

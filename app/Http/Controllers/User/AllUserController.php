@@ -56,6 +56,7 @@ class AllUserController extends Controller
         Order::findOrFail($order_id)->update([
             'return_date' => Carbon::now()->format('d F Y'),
             'return_reason' => $request->return_reason,
+            'return_order' => 1,
         ]);
 
 
@@ -83,6 +84,37 @@ class AllUserController extends Controller
         return view('frontend.user.order.cancel_order_view',compact('orders'));
 
     } // end method 
+
+
+    ///////////// Order Traking ///////
+
+    public function OrderTraking(Request $request){
+
+        $invoice = $request->code;
+
+        $track = Order::where('invoice_no',$invoice)->first();
+
+        if ($track) {
+
+            // echo "<pre>";
+            // print_r($track);
+
+        return view('frontend.traking.track_order',compact('track'));
+
+        }else{
+
+            $notification = array(
+            'message' => 'Invoice Code Is Invalid',
+            'alert-type' => 'error'
+        );
+
+        return redirect()->back()->with($notification);
+
+        }
+
+    } // end mehtod 
+
+
 
 
 

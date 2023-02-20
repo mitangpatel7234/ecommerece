@@ -3208,11 +3208,11 @@ age-container #owl-main .owl-next {
 	padding: 0;
 	background: #027ba5 !important;
 }
-.social .youtube a:before {
-	content: "\f167";
+.social .globe a:before {
+	content: "\f0ac";
 	font-family: FontAwesome;
 }
-.social .youtube a {
+.social .globe a {
 	font-size: 16px;
 	display: inline-block!important;
 	text-align: center;

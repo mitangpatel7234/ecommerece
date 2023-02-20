@@ -91,7 +91,7 @@ public function BlogCategoryUpdate(Request $request){
   ///////////////////////////// Blog Post ALL Methods //////////////////
 
   public function ListBlogPost(){
-  	  $blogpost = BlogPost::latest()->get();
+	$blogpost = BlogPost::with('category')->latest()->get();
   	  return view('backend.blog.post.post_list',compact('blogpost'));
   }
 
@@ -130,7 +130,7 @@ public function BlogCategoryUpdate(Request $request){
 		'post_image' => $save_url,
 		'post_details_en' => $request->post_details_en,
 		'post_details_hin' => $request->post_details_hin,
-
+		'created_at' => Carbon::now(),
     	]);
 
 	    $notification = array(
